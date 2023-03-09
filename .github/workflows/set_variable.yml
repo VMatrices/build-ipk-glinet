@@ -15,6 +15,9 @@ on:
       sourcecode:
         description: 'Source code URL'     
         required: true
+      codepath:
+        description: 'Source code path'     
+        required: false
       pkgname:
         description: 'Openwrt package name'  
         required: true
@@ -36,6 +39,7 @@ jobs:
       id: build
       env:
         SOURCECODEURL: ${{ github.event.inputs.sourcecode }}
+        CODEPATH: ${{ github.event.inputs.codepath }}
         PKGNAME: ${{ github.event.inputs.pkgname }}
         BOARD: ${{ github.event.inputs.device }}
         EMAIL: ${{ github.event.inputs.email }}

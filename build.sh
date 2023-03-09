@@ -2,7 +2,7 @@
 echo SOURCECODEURL: "$SOURCECODEURL"
 echo PKGNAME: "$PKGNAME"
 echo BOARD: "$BOARD"
-EMAIL=${EMAIL:-"aa@163.com"}
+EMAIL=${EMAIL:-"glinet@openwrt.com"}
 echo EMAIL: "$EMAIL"
 echo PASSWORD: "$PASSWORD"
 
@@ -12,18 +12,24 @@ sudo -E apt-get update
 sudo -E apt-get install git  asciidoc bash bc binutils bzip2 fastjar flex gawk gcc genisoimage gettext git intltool jikespg libgtk2.0-dev libncurses5-dev libssl-dev make mercurial patch perl-modules python2.7-dev rsync ruby sdcc subversion unzip util-linux wget xsltproc zlib1g-dev zlib1g-dev -y
 
 git config --global user.email "${EMAIL}"
-git config --global user.name "aa"
+git config --global user.name "glinet"
 [ -n "${PASSWORD}" ] && git config --global user.password "${PASSWORD}"
 
 mkdir -p  ${WORKDIR}/buildsource
 cd  ${WORKDIR}/buildsource
+
 git clone "$SOURCECODEURL"
+if [ -n "${CODEPATH}" ]; then
+	rm -f *.ipk
+	mv -f ${CODEPATH} .
+fi
+
 cd  ${WORKDIR}
 
 
 mips_siflower_sdk_get()
 {
-	 git clone https://github.com/gl-inet-builder/openwrt-sdk-siflower-1806.git openwrt-sdk
+	git clone https://github.com/gl-inet-builder/openwrt-sdk-siflower-1806.git openwrt-sdk
 }
 
 axt1800_sdk_get()
@@ -43,6 +49,10 @@ mt7981_sdk_get()
 {
 	 git clone https://github.com/gl-inet-builder/openwrt-sdk-mt7981.git  openwrt-sdk
 }
+
+cd po2lmo
+make & sudo -E make install
+cd ../
 
 
 case "$BOARD" in
